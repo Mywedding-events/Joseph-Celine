@@ -4,6 +4,8 @@
   --script: "Great Vibes", cursive;
   --serif: "Cormorant Garamond", Georgia, serif;
   --registry-number-serif: "Libre Baskerville", Georgia, serif;
+  --arabic: "Noto Naskh Arabic", Tahoma, Arial, sans-serif;
+  --arabic-display: "Aref Ruqaa", "Noto Naskh Arabic", serif;
   --cream: #fbf3e9;
   --ink: #fcf6ee;
   --ink-soft: rgba(252, 246, 238, 0.82);
@@ -52,6 +54,29 @@ a {
   font-family: var(--registry-number-serif);
   font-variant-numeric: lining-nums tabular-nums;
   letter-spacing: 0.02em;
+}
+
+.invitation-language-ar {
+  --script: var(--arabic-display);
+  --serif: var(--arabic);
+  --ink: #fcf6ee;
+  --ink-soft: rgba(252, 246, 238, 0.82);
+  --gold: oklch(0.82 0.075 78);
+  --gold-line: oklch(0.86 0.06 80 / 0.55);
+  color: var(--ink);
+  font-family: var(--arabic);
+}
+
+.invitation-language-ar .font-registry-numbers {
+  font-family: var(--arabic);
+}
+
+.invitation-language-ar [class*="tracking-"] {
+  letter-spacing: 0;
+}
+
+.invitation-language-ar .uppercase {
+  text-transform: none;
 }
 
 .wedding-rule {

@@ -14,14 +14,139 @@ const slideChromeColors = [
   "#355983",
 ];
 
-const sections = [
-  "Welcome",
-  "Invitation",
-  "Ceremony",
-  "Gift List",
-  "RSVP",
-  "Together",
-];
+const translations = {
+  en: {
+    sections: [
+      "Welcome",
+      "Invitation",
+      "Ceremony",
+      "Gift List",
+      "RSVP",
+      "Together",
+    ],
+    languageLabel: "Choose a language",
+    joseph: "Joseph",
+    celine: "Celine",
+    together: "Together is a beautiful place to be",
+    startAria: "Start the invitation and play music",
+    loading: "Loading",
+    invitation: "Invitation",
+    click: "Click",
+    toStart: "to Start",
+    gettingMarried: "Are getting married!",
+    date: "Sunday · October 11 · 2026",
+    countdown: ["Days", "Hours", "Mins", "Secs"],
+    scroll: "Scroll",
+    verse: "“What God has joined together, let no one separate.”",
+    verseReference: "— Matthew 19:6 —",
+    firstParents: ["Charbel & Maguy", "Massoud"],
+    and: "and",
+    secondParents: ["Jamil & Georgette", "Abou Rjeily"],
+    invite:
+      "Joyfully invite you to share in the wedding of their son and daughter",
+    weddingDate: "Sunday, 11 October 2026",
+    ceremony: "Wedding Ceremony",
+    ceremonyTime: "October 11 · 5:00 PM",
+    church: "St. Georges Church",
+    town: "Akoura",
+    churchLocation: "Church Location",
+    reception: "Followed by Reception & Dinner",
+    venue: "Byblos Palace",
+    receptionTime: "Welcome drink at 7:00 PM · Dinner at 8:00 PM",
+    venueLocation: "Venue Location",
+    giftList: "Wedding Gift List",
+    giftIntro: "Your presence is enough of a present to us!",
+    giftDetails: "For those who desire, a gift list is available at:",
+    account: "Account: 20997489-03",
+    rsvp: "Kindly RSVP",
+    confirmBy: "Please confirm by July 1, 2026",
+    inviteeCount: "Number of invitees:",
+    loadingInvitation: "Loading your invitation...",
+    invitationNotFound: "This invitation code was not found.",
+    invitationLoadError: "Unable to load this invitation.",
+    guest: "Guest",
+    accept: "Accept",
+    decline: "Decline",
+    confirming: "Confirming...",
+    confirm: "Press to Confirm",
+    submitError: "Unable to submit your RSVP.",
+    thankYou: "Thank you. Your response has been noted ♡",
+    noCode: "No invitation code was provided.",
+    seeYou: "See you there!",
+    pauseMusic: "Pause music",
+    playMusic: "Play music",
+    musicUnavailable: "Music could not be played",
+    sectionNavigation: "Invitation sections",
+    goToSection: "Go to section",
+  },
+  ar: {
+    sections: [
+      "الترحيب",
+      "الدعوة",
+      "المراسم",
+      "لائحة الهدايا",
+      "تأكيد الحضور",
+      "معًا",
+    ],
+    languageLabel: "اختر اللغة",
+    joseph: "جوزاف",
+    celine: "سيلين",
+    together: "معًا يحلو كل شيء",
+    startAria: "ابدأ الدعوة وشغّل الموسيقى",
+    loading: "جارٍ التحميل",
+    invitation: "الدعوة",
+    click: "اضغط",
+    toStart: "للبدء",
+    gettingMarried: "سيتزوّجان!",
+    date: "الأحد · 11 تشرين الأول · 2026",
+    countdown: ["يوم", "ساعة", "دقيقة", "ثانية"],
+    scroll: "مرّر",
+    verse: "«فالذي جمعه الله لا يفرّقه إنسان»",
+    verseReference: "— متّى 19:6 —",
+    firstParents: ["شربل و ماغي", "مسعود"],
+    and: "و",
+    secondParents: ["جميل و جورجيت", "أبو رجيلي"],
+    invite: "يسرّهما دعوتكم لمشاركتهما فرحة زفاف ابنهما وابنتهما",
+    weddingDate: "الأحد، 11 تشرين الأول 2026",
+    ceremony: "مراسم الزفاف",
+    ceremonyTime: "11 تشرين الأول · الساعة 5:00 مساءً",
+    church: "كنيسة مار جرجس",
+    town: "العاقورة",
+    churchLocation: "موقع الكنيسة",
+    reception: "يلي المراسم حفل استقبال وعشاء",
+    venue: "بايبلوس بالاس",
+    receptionTime: "مشروب ترحيبي الساعة 7:00 مساءً · العشاء الساعة 8:00 مساءً",
+    venueLocation: "موقع الحفل",
+    giftList: "لائحة الهدايا",
+    giftIntro: "حضوركم أجمل هدية لنا!",
+    giftDetails: "ولمن يرغب، تتوفّر لائحة هدايا لدى:",
+    account: "رقم الحساب: 20997489-03",
+    rsvp: "تأكيد الحضور",
+    confirmBy: "يرجى التأكيد قبل 1 تموز 2026",
+    inviteeCount: "عدد المدعوين:",
+    loadingInvitation: "جارٍ تحميل دعوتكم...",
+    invitationNotFound: "لم يتم العثور على رمز الدعوة هذا.",
+    invitationLoadError: "تعذّر تحميل هذه الدعوة.",
+    guest: "ضيف",
+    accept: "حاضر",
+    decline: "معتذر",
+    confirming: "جارٍ التأكيد...",
+    confirm: "اضغط للتأكيد",
+    submitError: "تعذّر إرسال تأكيد الحضور.",
+    thankYou: "شكرًا لكم. تم تسجيل ردّكم ♡",
+    noCode: "لم يتم إدخال رمز للدعوة.",
+    seeYou: "نراكم هناك!",
+    pauseMusic: "إيقاف الموسيقى مؤقتًا",
+    playMusic: "تشغيل الموسيقى",
+    musicUnavailable: "تعذّر تشغيل الموسيقى",
+    sectionNavigation: "أقسام الدعوة",
+    goToSection: "الانتقال إلى القسم",
+  },
+} as const;
+
+type Language = keyof typeof translations;
+type InvitationError = "not-found" | "load" | "";
+type RsvpError = "submit" | "";
 const weddingDate = new Date("2026-10-11T17:00:00+03:00").getTime();
 
 type Countdown = {
@@ -213,6 +338,7 @@ export default function WeddingInvitation({
   invitationCode?: string;
   slides: string[];
 }) {
+  const [language, setLanguage] = useState<Language>("en");
   const [appReady, setAppReady] = useState(false);
   const [invitationStarted, setInvitationStarted] = useState(false);
   const [startingInvitation, setStartingInvitation] = useState(false);
@@ -230,21 +356,51 @@ export default function WeddingInvitation({
   const [invitees, setInvitees] = useState<Invitee[]>([]);
   const [rsvps, setRsvps] = useState<Record<string, RsvpStatus>>({});
   const [invitationLoading, setInvitationLoading] = useState(false);
-  const [invitationError, setInvitationError] = useState("");
+  const [invitationError, setInvitationError] =
+    useState<InvitationError>("");
   const [submittingRsvp, setSubmittingRsvp] = useState(false);
-  const [rsvpError, setRsvpError] = useState("");
+  const [rsvpError, setRsvpError] = useState<RsvpError>("");
   const [confirmed, setConfirmed] = useState(false);
   const lockRef = useRef(false);
   const currentRef = useRef(0);
   const touchStartRef = useRef<number | null>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
   const sectionIds = useMemo(
-    () => sections.map((_, index) => `section-${index + 1}`),
+    () => Array.from({ length: 6 }, (_, index) => `section-${index + 1}`),
     [],
   );
+  const copy = translations[language];
+  const isArabic = language === "ar";
   const activeChromeColor =
     slideChromeColors[activeSlide % slideChromeColors.length] ?? "#2e5882";
   const normalizedInvitationCode = invitationCode?.trim();
+
+  useEffect(() => {
+    try {
+      const savedLanguage = window.localStorage.getItem("wedding-language");
+      if (savedLanguage === "en" || savedLanguage === "ar") {
+        setLanguage(savedLanguage);
+      } else if (window.navigator.language.toLowerCase().startsWith("ar")) {
+        setLanguage("ar");
+      }
+    } catch {
+      // The invitation still works if browser storage is unavailable.
+    }
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.lang = language;
+    document.documentElement.dir = isArabic ? "rtl" : "ltr";
+  }, [isArabic, language]);
+
+  const changeLanguage = (nextLanguage: Language) => {
+    setLanguage(nextLanguage);
+    try {
+      window.localStorage.setItem("wedding-language", nextLanguage);
+    } catch {
+      // Keep the current selection for this visit if storage is unavailable.
+    }
+  };
 
   useEffect(() => {
     const controller = new AbortController();
@@ -531,11 +687,7 @@ export default function WeddingInvitation({
     )
       .then(async (response) => {
         if (!response.ok) {
-          const fallbackMessage = `Invitation code "${normalizedInvitationCode}" was not found.`;
-          const errorBody = (await response
-            .json()
-            .catch(() => undefined)) as { message?: string } | undefined;
-          throw new Error(errorBody?.message ?? fallbackMessage);
+          throw new Error("not-found");
         }
 
         return response.json() as Promise<InvitationResponse>;
@@ -557,9 +709,9 @@ export default function WeddingInvitation({
         setInvitees([]);
         setRsvps({});
         setInvitationError(
-          error instanceof Error
-            ? error.message
-            : "Unable to load this invitation.",
+          error instanceof Error && error.message === "not-found"
+            ? "not-found"
+            : "load",
         );
       })
       .finally(() => {
@@ -633,10 +785,7 @@ export default function WeddingInvitation({
       );
 
       if (!response.ok) {
-        const errorBody = (await response.json().catch(() => undefined)) as
-          | { message?: string }
-          | undefined;
-        throw new Error(errorBody?.message ?? "Unable to submit your RSVP.");
+        throw new Error("submit");
       }
 
       const updatedInvitation =
@@ -652,17 +801,18 @@ export default function WeddingInvitation({
         ),
       );
       setConfirmed(true);
-    } catch (error) {
-      setRsvpError(
-        error instanceof Error ? error.message : "Unable to submit your RSVP.",
-      );
+    } catch {
+      setRsvpError("submit");
     } finally {
       setSubmittingRsvp(false);
     }
   };
 
   return (
-    <>
+    <div
+      className={isArabic ? "invitation-language-ar" : undefined}
+      dir={isArabic ? "rtl" : "ltr"}
+    >
       <audio
         ref={audioRef}
         src="/uploads/music.mp3"
@@ -705,6 +855,30 @@ export default function WeddingInvitation({
       />
 
       <div
+        className="fixed right-[18px] top-[18px] z-[60] flex overflow-hidden rounded-full border border-[var(--gold-line)] bg-[rgba(36,24,17,0.46)] p-1 font-serif-wedding text-xs shadow-[0_5px_24px_rgba(20,12,7,0.2)] backdrop-blur-[7px]"
+        role="group"
+        aria-label={copy.languageLabel}
+        dir="ltr"
+      >
+        {(["en", "ar"] as const).map((option) => (
+          <button
+            key={option}
+            className={`min-w-10 cursor-pointer rounded-full px-2.5 py-1.5 transition duration-300 active:scale-95 ${
+              language === option
+                ? "bg-[var(--ink)] font-semibold text-[#3a2615]"
+                : "text-[var(--ink)] hover:bg-white/[0.12]"
+            }`}
+            type="button"
+            onClick={() => changeLanguage(option)}
+            aria-pressed={language === option}
+            lang={option}
+          >
+            {option === "en" ? "EN" : "عربي"}
+          </button>
+        ))}
+      </div>
+
+      <div
         className={`invitation-entry fixed inset-0 z-50 flex items-center justify-center overflow-hidden px-7 py-10 text-center transition-[opacity,visibility] duration-700 ${
           invitationStarted
             ? "pointer-events-none invisible opacity-0"
@@ -726,10 +900,11 @@ export default function WeddingInvitation({
           <span className="wedding-diamond mt-11" aria-hidden="true" />
 
           <h1 className="text-shadow-wedding font-script mt-7 whitespace-nowrap pb-[0.12em] text-[clamp(45px,13vw,66px)] leading-none text-[var(--ink)]">
-            Joseph <span className="text-[var(--gold)]">&amp;</span> Celine
+            {copy.joseph} <span className="text-[var(--gold)]">و</span>{" "}
+            {copy.celine}
           </h1>
           <p className="text-shadow-wedding mt-3 text-[clamp(16px,4.5vw,19px)] italic text-[var(--ink-soft)]">
-            Together is a beautiful place to be
+            {copy.together}
           </p>
 
           <button
@@ -737,12 +912,14 @@ export default function WeddingInvitation({
             type="button"
             onClick={startInvitation}
             disabled={!appReady || startingInvitation}
-            aria-label="Start the invitation and play music"
+            aria-label={copy.startAria}
           >
             <span>
-              {startingInvitation || !appReady ? "Loading" : "Click"}
+              {startingInvitation || !appReady ? copy.loading : copy.click}
               <br />
-              {startingInvitation || !appReady ? "Invitation" : "to Start"}
+              {startingInvitation || !appReady
+                ? copy.invitation
+                : copy.toStart}
             </span>
           </button>
 
@@ -764,30 +941,29 @@ export default function WeddingInvitation({
         >
           <div className="w-full max-w-[430px]">
             <h1 className="reveal text-shadow-wedding font-script my-[0.12em] flex flex-col items-center pb-[0.08em] text-[clamp(58px,16vw,88px)] leading-[0.9] text-[var(--ink)]">
-              <span>Joseph</span>
-              <span className="text-[0.62em] leading-[0.72]">&amp;</span>
-              <span>Celine</span>
+              <span>{copy.joseph}</span>
+              <span className="text-[0.62em] leading-[0.72]">و</span>
+              <span>{copy.celine}</span>
             </h1>
             <p className="reveal text-shadow-wedding font-serif-wedding text-[clamp(22px,6vw,30px)] italic leading-tight text-(--ink)">
-              Are getting married!
+              {copy.gettingMarried}
             </p>
             <div className="wedding-rule reveal" />
             <p className="reveal text-shadow-wedding text-[15px] uppercase tracking-[0.18em] text-[var(--ink-soft)]">
-              Sunday · October 11 · 2026
+              {copy.date}
             </p>
             <div className="reveal mt-[34px] flex justify-center gap-3.5">
-              {[
-                ["Days", countdown.days],
-                ["Hours", countdown.hours],
-                ["Mins", countdown.mins],
-                ["Secs", countdown.secs],
-              ].map(([label, value]) => (
+              {copy.countdown.map((label, index) => (
                 <div
                   key={label}
                   className="flex min-w-[62px] flex-col items-center"
                 >
                   <span className="text-shadow-wedding [font-variant-numeric:tabular-nums] text-[clamp(40px,11vw,52px)] font-medium leading-none text-[var(--ink)]">
-                    {value}
+                    {
+                      [countdown.days, countdown.hours, countdown.mins, countdown.secs][
+                        index
+                      ]
+                    }
                   </span>
                   <span className="mt-[9px] text-[11px] uppercase tracking-[0.26em] text-[var(--ink-soft)]">
                     {label}
@@ -806,7 +982,7 @@ export default function WeddingInvitation({
             }
           >
             <span className="text-[13px] uppercase tracking-[0.3em]">
-              Scroll
+              {copy.scroll}
             </span>
             <svg
               className="animate-bob"
@@ -833,32 +1009,37 @@ export default function WeddingInvitation({
         >
           <div className="w-full max-w-[430px]">
             <p className="reveal text-shadow-wedding text-[clamp(19px,5.2vw,22px)] italic leading-[1.7] text-[var(--ink)]">
-              &quot;What God has joined together, let no one separate.&quot;
+              {copy.verse}
             </p>
             <p className="reveal text-shadow-wedding mt-2.5 text-[15px] tracking-[0.16em] text-[var(--ink-soft)]">
-              — Matthew 19:6 —
+              {copy.verseReference}
             </p>
             <div className="wedding-rule reveal" />
-            <p className="reveal text-shadow-wedding text-[clamp(17px,4.5vw,20px)] font-semibold leading-[1.55] text-[var(--ink)]">
-              Mr. &amp; Mrs. Charbel &amp; Maguy Massoud
-              <br />
-              <span className="font-normal italic">and</span>
-              <br />
-              Mr. &amp; Mrs. Jamil &amp; Georgette Abou Rjeily
+            <p className="reveal text-shadow-wedding grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-x-2 text-[clamp(14px,3.6vw,17px)] font-semibold leading-[1.45] text-[var(--ink)]">
+              <span className="flex flex-col gap-1">
+                {copy.firstParents.map((parent) => (
+                  <span key={parent}>{parent}</span>
+                ))}
+              </span>
+              <span className="font-normal italic">{copy.and}</span>
+              <span className="flex flex-col gap-1">
+                {copy.secondParents.map((parent) => (
+                  <span key={parent}>{parent}</span>
+                ))}
+              </span>
             </p>
             <p className="reveal text-shadow-wedding mt-3 text-[clamp(17px,4.5vw,20px)] leading-[1.55] text-[var(--ink)]">
-              Joyfully invite you to share in the wedding of their son and
-              daughter
+              {copy.invite}
             </p>
             <p className="reveal text-shadow-wedding font-script mt-2 text-[clamp(42px,11vw,58px)] leading-[1.05] text-(--ink)">
-              Joseph
+              {copy.joseph}
               <br />
-              &amp;
+              و
               <br />
-              Celine
+              {copy.celine}
             </p>
             <p className="reveal text-shadow-wedding text-[clamp(18px,4.8vw,21px)] leading-[1.75] text-[var(--ink)]">
-              Sunday, 11 October 2026
+              {copy.weddingDate}
             </p>
           </div>
         </section>
@@ -870,41 +1051,41 @@ export default function WeddingInvitation({
         >
           <div className="flex w-full max-w-[430px] flex-col items-center">
             <h2 className="reveal text-shadow-wedding font-script text-[clamp(42px,12vw,64px)] leading-[1.04] text-(--ink)">
-              Wedding Ceremony
+              {copy.ceremony}
             </h2>
             <div className="wedding-rule reveal my-4 max-[380px]:my-3" />
             <CalendarIcon className="reveal mx-auto block h-9 w-9 text-(--ink) drop-shadow-[0_2px_8px_rgba(30,18,10,0.45)] min-[390px]:h-10 min-[390px]:w-10" />
             <p className="reveal text-shadow-wedding mt-1 text-[clamp(17px,4.6vw,21px)] leading-[1.55] tracking-[0.04em] text-(--ink) min-[390px]:mt-1.5 min-[390px]:leading-[1.75]">
-              October 11 · 5:00 PM
+              {copy.ceremonyTime}
             </p>
             <LocationIcon className="reveal mx-auto mt-5 block h-10 w-9 text-(--ink) drop-shadow-[0_2px_8px_rgba(30,18,10,0.45)] min-[390px]:mt-[30px] min-[390px]:h-11 min-[390px]:w-10" />
             <p className="reveal text-shadow-wedding mt-1 text-[clamp(17px,4.6vw,21px)] font-semibold leading-[1.55] text-(--ink) min-[390px]:leading-[1.75]">
-              St. Georges Church
+              {copy.church}
             </p>
             <p className="reveal text-shadow-wedding text-[clamp(17px,4.6vw,21px)] leading-[1.55] text-(--ink) min-[390px]:leading-[1.75]">
-              Akoura
+              {copy.town}
             </p>
             <ButtonLink
               className="reveal mt-4 max-[380px]:px-5 max-[380px]:py-[11px] max-[380px]:text-sm min-[390px]:mt-[22px]"
               href="https://maps.app.goo.gl/8bXCoBUVUMAksLuK8"
             >
-              Church Location
+              {copy.churchLocation}
             </ButtonLink>
             <div className="wedding-rule reveal my-4 max-[380px]:my-3" />
             <p className="reveal text-shadow-wedding text-[clamp(17px,4.6vw,21px)] italic leading-[1.55] text-(--ink-soft) min-[390px]:leading-[1.75]">
-              Followed by Reception &amp; Dinner
+              {copy.reception}
             </p>
             <p className="reveal text-shadow-wedding mt-2.5 text-[clamp(17px,4.6vw,21px)] font-semibold leading-[1.55] text-(--ink) min-[390px]:mt-3.5 min-[390px]:leading-[1.75]">
-              Byblos Palace
+              {copy.venue}
             </p>
             <p className="reveal text-shadow-wedding text-[clamp(16px,4.2vw,19px)] leading-[1.55] text-(--ink-soft) min-[390px]:leading-[1.75]">
-              Welcome drink at 7:00 PM · Dinner at 8:00 PM
+              {copy.receptionTime}
             </p>
             <ButtonLink
               className="reveal mt-4 max-[380px]:px-5 max-[380px]:py-[11px] max-[380px]:text-sm min-[390px]:mt-[18px]"
               href="https://maps.app.goo.gl/mDFjtZfYtjht6bcg9?g_st=aw"
             >
-              Venue Location
+              {copy.venueLocation}
             </ButtonLink>
           </div>
         </section>
@@ -916,14 +1097,14 @@ export default function WeddingInvitation({
         >
           <div className="flex w-full max-w-[430px] flex-col items-center">
             <h2 className="reveal text-shadow-wedding font-script text-[clamp(42px,12vw,64px)] leading-[1.04] text-(--ink)">
-              Liste de Mariage
+              {copy.giftList}
             </h2>
             <div className="wedding-rule reveal my-4 max-[380px]:my-3" />
             <div className="reveal relative w-full overflow-hidden rounded-[3px] border border-(--gold-line) bg-[rgba(76,49,33,0.42)] px-5 py-6 shadow-[0_16px_48px_rgba(24,14,8,0.3)] backdrop-blur-[2px] before:pointer-events-none before:absolute before:inset-[6px] before:border before:border-[rgba(252,246,238,0.16)] min-[390px]:px-6 min-[390px]:py-7 max-[380px]:px-4 max-[380px]:py-5">
               <p className="relative text-shadow-wedding text-[clamp(17px,4.6vw,21px)] italic leading-[1.55] text-(--ink) min-[390px]:leading-[1.75]">
-                Your presence is enough of a present to us!
+                {copy.giftIntro}
                 <br />
-                For those who desire, a gift list is available at:
+                {copy.giftDetails}
               </p>
               <div className="wedding-rule relative my-4 min-[390px]:my-5" />
               <div className="relative text-shadow-wedding">
@@ -931,7 +1112,7 @@ export default function WeddingInvitation({
                   Whish Money
                 </div>
                 <p className="font-registry-numbers text-[clamp(17px,4.5vw,20px)] leading-7 tracking-[0.04em] text-(--ink) min-[390px]:leading-8">
-                  Account: 20997489-03
+                  {copy.account}
                 </p>
               </div>
             </div>
@@ -945,25 +1126,27 @@ export default function WeddingInvitation({
         >
           <div className="w-full max-w-[430px]">
             <h2 className="reveal text-shadow-wedding font-script text-[clamp(46px,13vw,64px)] leading-[1.04] text-[var(--ink)]">
-              Kindly RSVP
+              {copy.rsvp}
             </h2>
             <p className="reveal text-shadow-wedding mt-1.5 text-[15px] tracking-[0.14em] text-[var(--ink-soft)]">
-              Please confirm by July 1, 2026
+              {copy.confirmBy}
             </p>
             <div className="wedding-rule reveal" />
             <p className="reveal text-shadow-wedding my-1.5 mb-[18px] text-[17px] tracking-[0.04em] text-[var(--ink-soft)]">
-              Number of invitees:{" "}
+              {copy.inviteeCount}{" "}
               <b className="font-semibold text-[var(--ink)]">
                 {invitees.length}
               </b>
             </p>
             {invitationLoading ? (
               <p className="reveal text-shadow-wedding text-[17px] italic text-[var(--ink-soft)]">
-                Loading your invitation...
+                {copy.loadingInvitation}
               </p>
             ) : invitationError ? (
               <p className="reveal text-shadow-wedding text-[17px] italic text-[var(--ink-soft)]">
-                {invitationError}
+                {invitationError === "not-found"
+                  ? copy.invitationNotFound
+                  : copy.invitationLoadError}
               </p>
             ) : invitees.length > 0 ? (
               <>
@@ -971,20 +1154,20 @@ export default function WeddingInvitation({
                   {invitees.map((invitee) => (
                     <div
                       key={invitee.id}
-                      className="flex items-center justify-between gap-3 border-y border-[rgba(252,246,238,0.16)] py-3 text-left"
+                      className="flex items-center justify-between gap-3 border-y border-[rgba(252,246,238,0.16)] py-3 text-start"
                     >
                       <span className="text-shadow-wedding text-[19px] text-[var(--ink)]">
-                        {invitee.fullName ?? "Guest"}
+                        {invitee.fullName ?? copy.guest}
                       </span>
                       <div className="flex gap-2">
                         <RsvpButton
-                          label="Accept"
+                          label={copy.accept}
                           variant="accept"
                           active={rsvps[invitee.id] === "accepted"}
                           onClick={() => selectRsvp(invitee.id, "accepted")}
                         />
                         <RsvpButton
-                          label="Decline"
+                          label={copy.decline}
                           variant="decline"
                           active={rsvps[invitee.id] === "rejected"}
                           onClick={() => selectRsvp(invitee.id, "rejected")}
@@ -999,23 +1182,23 @@ export default function WeddingInvitation({
                   onClick={submitRsvps}
                   disabled={submittingRsvp}
                 >
-                  {submittingRsvp ? "Confirming..." : "Press to Confirm"}
+                  {submittingRsvp ? copy.confirming : copy.confirm}
                 </button>
                 {rsvpError ? (
                   <p className="text-shadow-wedding mt-5 min-h-6 text-lg italic text-[var(--ink-soft)]">
-                    {rsvpError}
+                    {copy.submitError}
                   </p>
                 ) : (
                   <p
                     className={`text-shadow-wedding mt-5 min-h-6 text-lg italic text-[var(--gold)] transition-opacity duration-500 ${confirmed ? "opacity-100" : "opacity-0"}`}
                   >
-                    Thank you. Your response has been noted ♡
+                    {copy.thankYou}
                   </p>
                 )}
               </>
             ) : (
               <p className="reveal text-shadow-wedding text-[17px] italic text-[var(--ink-soft)]">
-                No invitation code was provided.
+                {copy.noCode}
               </p>
             )}
           </div>
@@ -1028,7 +1211,7 @@ export default function WeddingInvitation({
         >
           <div className="flex w-full max-w-[430px] flex-col items-center">
             <h2 className="reveal text-shadow-wedding font-script text-[clamp(46px,13vw,62px)] leading-[1.04] text-[var(--ink)]">
-              See you there!
+              {copy.seeYou}
             </h2>
           </div>
         </section>
@@ -1042,8 +1225,8 @@ export default function WeddingInvitation({
         }`}
         type="button"
         onClick={toggleMusic}
-        aria-label={musicPlaying ? "Pause music" : "Play music"}
-        title={musicUnavailable ? "Music could not be played" : undefined}
+        aria-label={musicPlaying ? copy.pauseMusic : copy.playMusic}
+        title={musicUnavailable ? copy.musicUnavailable : undefined}
       >
         {musicPlaying ? (
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -1067,10 +1250,10 @@ export default function WeddingInvitation({
             ? "pointer-events-auto opacity-100"
             : "pointer-events-none opacity-0"
         }`}
-        aria-label="Invitation sections"
+        aria-label={copy.sectionNavigation}
         aria-hidden={!invitationStarted}
       >
-        {sections.map((section, index) => (
+        {copy.sections.map((section, index) => (
           <button
             key={section}
             data-dot
@@ -1081,10 +1264,10 @@ export default function WeddingInvitation({
                 : "border-[rgba(252,246,238,0.7)] bg-transparent"
             }`}
             type="button"
-            aria-label={`Go to section ${index + 1}: ${section}`}
+            aria-label={`${copy.goToSection} ${index + 1}: ${section}`}
           />
         ))}
       </nav>
-    </>
+    </div>
   );
 }
