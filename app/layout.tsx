@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import "./globals.css";
 
 function getSiteUrl() {
-  // The site is served from the joeelissa subdomain. metadataBase must match
+  // The site is served from the josephceline subdomain. metadataBase must match
   // the real host, otherwise Open Graph images resolve to an absolute URL on
   // the wrong domain (the apex) and chat crawlers like WhatsApp fail to
   // download the preview image. NEXT_PUBLIC_SITE_URL can override this.
@@ -11,7 +11,7 @@ function getSiteUrl() {
     process.env.NEXT_PUBLIC_SITE_URL ??
     process.env.VERCEL_PROJECT_PRODUCTION_URL ??
     process.env.VERCEL_URL ??
-    "https://joeelissa.mywedding.events";
+    "https://josephceline.mywedding.events";
 
   return new URL(
     configuredUrl.startsWith("http") ? configuredUrl : `https://${configuredUrl}`,
@@ -22,38 +22,38 @@ const siteUrl = getSiteUrl();
 // Use a lightweight 1200x630 cover for link previews. WhatsApp (and most
 // chat apps) will not render Open Graph images larger than ~300 KB, so the
 // full-resolution photos in /uploads are unsuitable as preview images.
-const coverImageUrl = new URL("/uploads/whatsapp-cover.jpg", siteUrl).toString();
+const coverImageUrl = new URL("/uploads/whatsapp-cover.jpeg", siteUrl).toString();
 const previewImage = {
   url: coverImageUrl,
   width: 1200,
   height: 630,
-  alt: "Joe and Elissa wedding invitation",
+  alt: "Joseph and Celine wedding invitation",
   type: "image/jpeg",
 };
 
 export const metadata: Metadata = {
   metadataBase: siteUrl,
-  title: "Joe & Elissa - Wedding Invitation",
+  title: "Joseph & Celine - Wedding Invitation",
   description:
-    "Wedding invitation for Joe and Elissa on Sunday, August 16, 2026.",
+    "Wedding invitation for Joseph and Celine on Sunday, October 11, 2026.",
   alternates: {
     canonical: siteUrl,
   },
   openGraph: {
-    title: "Joe & Elissa - Wedding Invitation",
+    title: "Joseph & Celine - Wedding Invitation",
     description:
-      "Wedding invitation for Joe and Elissa on Sunday, August 16, 2026.",
+      "Wedding invitation for Joseph and Celine on Sunday, October 11, 2026.",
     url: siteUrl.toString(),
-    siteName: "Joe & Elissa Wedding Invitation",
+    siteName: "Joseph & Celine Wedding Invitation",
     type: "website",
     locale: "en_US",
     images: [previewImage],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Joe & Elissa - Wedding Invitation",
+    title: "Joseph & Celine - Wedding Invitation",
     description:
-      "Wedding invitation for Joe and Elissa on Sunday, August 16, 2026.",
+      "Wedding invitation for Joseph and Celine on Sunday, October 11, 2026.",
     images: [previewImage],
   },
 };

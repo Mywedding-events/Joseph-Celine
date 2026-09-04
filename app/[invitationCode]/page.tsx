@@ -1,4 +1,5 @@
 import WeddingInvitation from "../../components/WeddingInvitation";
+import { getNumberedUploadImages } from "../../lib/uploadImages";
 
 export default async function InvitationCodePage({
   params,
@@ -6,6 +7,9 @@ export default async function InvitationCodePage({
   params: Promise<{ invitationCode: string }>;
 }) {
   const { invitationCode } = await params;
+  const slides = await getNumberedUploadImages();
 
-  return <WeddingInvitation invitationCode={invitationCode} />;
+  return (
+    <WeddingInvitation invitationCode={invitationCode} slides={slides} />
+  );
 }
