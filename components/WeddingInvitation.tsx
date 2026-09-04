@@ -214,6 +214,10 @@ export default function WeddingInvitation({
   slides: string[];
 }) {
   const [appReady, setAppReady] = useState(false);
+  const [invitationStarted, setInvitationStarted] = useState(false);
+  const [startingInvitation, setStartingInvitation] = useState(false);
+  const [musicPlaying, setMusicPlaying] = useState(false);
+  const [musicUnavailable, setMusicUnavailable] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
   const [countdown, setCountdown] = useState<Countdown>({
     days: "00",
@@ -233,6 +237,7 @@ export default function WeddingInvitation({
   const lockRef = useRef(false);
   const currentRef = useRef(0);
   const touchStartRef = useRef<number | null>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
   const sectionIds = useMemo(
     () => sections.map((_, index) => `section-${index + 1}`),
     [],
@@ -254,6 +259,14 @@ export default function WeddingInvitation({
 
     return () => controller.abort();
   }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = invitationStarted ? "" : "hidden";
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [invitationStarted]);
 
   useEffect(() => {
     if (!appReady) return;
@@ -294,7 +307,7 @@ export default function WeddingInvitation({
   }, [activeChromeColor, appReady]);
 
   useEffect(() => {
-    if (!appReady) return;
+    if (!appReady || !invitationStarted) return;
 
     const reducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
@@ -492,7 +505,7 @@ export default function WeddingInvitation({
       window.clearTimeout(firstFallback);
       window.clearTimeout(secondFallback);
     };
-  }, [appReady, sectionIds]);
+  }, [appReady, invitationStarted, sectionIds]);
 
   useEffect(() => {
     if (!normalizedInvitationCode) {
@@ -562,6 +575,39 @@ export default function WeddingInvitation({
     setRsvps((current) => ({ ...current, [inviteeId]: value }));
   };
 
+  const startInvitation = async () => {
+    if (startingInvitation || invitationStarted) return;
+
+    setStartingInvitation(true);
+    setMusicUnavailable(false);
+
+    try {
+      await audioRef.current?.play();
+    } catch {
+      setMusicUnavailable(true);
+    } finally {
+      setInvitationStarted(true);
+      setStartingInvitation(false);
+    }
+  };
+
+  const toggleMusic = async () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (!audio.paused) {
+      audio.pause();
+      return;
+    }
+
+    setMusicUnavailable(false);
+    try {
+      await audio.play();
+    } catch {
+      setMusicUnavailable(true);
+    }
+  };
+
   const submitRsvps = async () => {
     if (!normalizedInvitationCode || invitees.length === 0) return;
 
@@ -617,6 +663,19 @@ export default function WeddingInvitation({
 
   return (
     <>
+      <audio
+        ref={audioRef}
+        src="/uploads/music.mp3"
+        preload="auto"
+        loop
+        onPlay={() => setMusicPlaying(true)}
+        onPause={() => setMusicPlaying(false)}
+        onError={() => {
+          setMusicPlaying(false);
+          setMusicUnavailable(true);
+        }}
+      />
+
       <div
         className="bg-fallback fixed inset-0 z-0"
         style={{ backgroundColor: activeChromeColor }}
@@ -645,7 +704,59 @@ export default function WeddingInvitation({
         aria-hidden="true"
       />
 
-      <main className="relative z-[2]">
+      <div
+        className={`invitation-entry fixed inset-0 z-50 flex items-center justify-center overflow-hidden px-7 py-10 text-center transition-[opacity,visibility] duration-700 ${
+          invitationStarted
+            ? "pointer-events-none invisible opacity-0"
+            : "visible opacity-100"
+        }`}
+        aria-hidden={invitationStarted}
+      >
+        <div
+          className="absolute inset-0 bg-[rgba(15,12,10,0.72)] backdrop-blur-[10px]"
+          aria-hidden="true"
+        />
+        <div
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_42%,rgba(123,101,78,0.18),transparent_44%),linear-gradient(180deg,rgba(0,0,0,0.08),rgba(0,0,0,0.35))] shadow-[inset_0_0_180px_35px_rgba(0,0,0,0.56)]"
+          aria-hidden="true"
+        />
+
+        <div className="invitation-entry-content relative flex w-full max-w-[430px] flex-col items-center">
+          <div className="entry-rule w-full" aria-hidden="true" />
+          <span className="wedding-diamond mt-11" aria-hidden="true" />
+
+          <h1 className="text-shadow-wedding font-script mt-7 whitespace-nowrap pb-[0.12em] text-[clamp(45px,13vw,66px)] leading-none text-[var(--ink)]">
+            Joseph <span className="text-[var(--gold)]">&amp;</span> Celine
+          </h1>
+          <p className="text-shadow-wedding mt-3 text-[clamp(16px,4.5vw,19px)] italic text-[var(--ink-soft)]">
+            Together is a beautiful place to be
+          </p>
+
+          <button
+            className="entry-start-button mt-9 flex h-[138px] w-[138px] cursor-pointer items-center justify-center rounded-full border border-[var(--gold-line)] bg-black/10 font-serif-wedding text-[13px] uppercase leading-[1.8] tracking-[0.28em] text-[var(--ink)] transition duration-500 hover:border-[var(--gold)] hover:bg-white/[0.06] hover:shadow-[0_0_42px_rgba(211,178,126,0.12)] active:scale-95 disabled:cursor-wait disabled:opacity-70"
+            type="button"
+            onClick={startInvitation}
+            disabled={!appReady || startingInvitation}
+            aria-label="Start the invitation and play music"
+          >
+            <span>
+              {startingInvitation || !appReady ? "Loading" : "Click"}
+              <br />
+              {startingInvitation || !appReady ? "Invitation" : "to Start"}
+            </span>
+          </button>
+
+          <span className="wedding-diamond mt-8" aria-hidden="true" />
+          <div className="entry-rule mt-11 w-full" aria-hidden="true" />
+        </div>
+      </div>
+
+      <main
+        className={`relative z-[2] transition-opacity duration-700 ${
+          invitationStarted ? "opacity-100" : "opacity-0"
+        }`}
+        aria-hidden={!invitationStarted}
+      >
         <section
           id={sectionIds[0]}
           className="relative flex min-h-svh flex-col items-center justify-center px-7 pb-[120px] pt-24 text-center"
@@ -923,9 +1034,41 @@ export default function WeddingInvitation({
         </section>
       </main>
 
+      <button
+        className={`fixed left-[18px] top-[18px] z-30 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-[var(--gold-line)] bg-[rgba(36,24,17,0.34)] text-[var(--ink)] shadow-[0_5px_24px_rgba(20,12,7,0.2)] backdrop-blur-[5px] transition duration-300 hover:border-[var(--ink)] hover:bg-white/[0.12] active:scale-95 ${
+          invitationStarted
+            ? "pointer-events-auto opacity-100"
+            : "pointer-events-none opacity-0"
+        }`}
+        type="button"
+        onClick={toggleMusic}
+        aria-label={musicPlaying ? "Pause music" : "Play music"}
+        title={musicUnavailable ? "Music could not be played" : undefined}
+      >
+        {musicPlaying ? (
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M9 18V5l10-2v13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            <circle cx="6" cy="18" r="3" stroke="currentColor" strokeWidth="1.5" />
+            <circle cx="16" cy="16" r="3" stroke="currentColor" strokeWidth="1.5" />
+          </svg>
+        ) : (
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M9 18V5l10-2v13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            <circle cx="6" cy="18" r="3" stroke="currentColor" strokeWidth="1.5" />
+            <circle cx="16" cy="16" r="3" stroke="currentColor" strokeWidth="1.5" />
+            <path d="M3 3l18 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+          </svg>
+        )}
+      </button>
+
       <nav
-        className="fixed right-[18px] top-1/2 z-30 flex -translate-y-1/2 flex-col gap-[13px]"
+        className={`fixed right-[18px] top-1/2 z-30 flex -translate-y-1/2 flex-col gap-[13px] transition-opacity duration-700 ${
+          invitationStarted
+            ? "pointer-events-auto opacity-100"
+            : "pointer-events-none opacity-0"
+        }`}
         aria-label="Invitation sections"
+        aria-hidden={!invitationStarted}
       >
         {sections.map((section, index) => (
           <button
