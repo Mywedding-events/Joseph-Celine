@@ -114,7 +114,7 @@ const translations = {
     town: "العاقورة",
     churchLocation: "موقع الكنيسة",
     reception: "يلي المراسم حفل استقبال وعشاء",
-    venue: "بايبلوس بالاس",
+    venue: "بيبلوس بالاس",
     receptionTime: "مشروب ترحيبي الساعة 7:00 مساءً · العشاء الساعة 8:00 مساءً",
     venueLocation: "موقع الحفل",
     giftList: "لائحة الهدايا",
