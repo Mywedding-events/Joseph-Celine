@@ -27,6 +27,7 @@ const translations = {
     languageLabel: "Choose a language",
     joseph: "Joseph",
     celine: "Celine",
+    namesAnd: "&",
     together: "Together is a beautiful place to be",
     startAria: "Start the invitation and play music",
     loading: "Loading",
@@ -91,6 +92,7 @@ const translations = {
     languageLabel: "اختر اللغة",
     joseph: "جوزاف",
     celine: "سيلين",
+    namesAnd: "و",
     together: "معًا يحلو كل شيء",
     startAria: "ابدأ الدعوة وشغّل الموسيقى",
     loading: "جارٍ التحميل",
@@ -900,7 +902,8 @@ export default function WeddingInvitation({
           <span className="wedding-diamond mt-11" aria-hidden="true" />
 
           <h1 className="text-shadow-wedding font-script mt-7 whitespace-nowrap pb-[0.12em] text-[clamp(45px,13vw,66px)] leading-none text-[var(--ink)]">
-            {copy.joseph} <span className="text-[var(--gold)]">و</span>{" "}
+            {copy.joseph}{" "}
+            <span className="text-[var(--gold)]">{copy.namesAnd}</span>{" "}
             {copy.celine}
           </h1>
           <p className="text-shadow-wedding mt-3 text-[clamp(16px,4.5vw,19px)] italic text-[var(--ink-soft)]">
@@ -942,7 +945,9 @@ export default function WeddingInvitation({
           <div className="w-full max-w-[430px]">
             <h1 className="reveal text-shadow-wedding font-script my-[0.12em] flex flex-col items-center pb-[0.08em] text-[clamp(58px,16vw,88px)] leading-[0.9] text-[var(--ink)]">
               <span>{copy.joseph}</span>
-              <span className="text-[0.62em] leading-[0.72]">و</span>
+              <span className="text-[0.62em] leading-[0.72]">
+                {copy.namesAnd}
+              </span>
               <span>{copy.celine}</span>
             </h1>
             <p className="reveal text-shadow-wedding font-serif-wedding text-[clamp(22px,6vw,30px)] italic leading-tight text-(--ink)">
@@ -1034,7 +1039,7 @@ export default function WeddingInvitation({
             <p className="reveal text-shadow-wedding font-script mt-2 text-[clamp(42px,11vw,58px)] leading-[1.05] text-(--ink)">
               {copy.joseph}
               <br />
-              و
+              {copy.namesAnd}
               <br />
               {copy.celine}
             </p>
