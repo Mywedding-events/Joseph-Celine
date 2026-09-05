@@ -4,6 +4,8 @@ import Image from "next/image";
 import type { ReactNode } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
+const whishAccountNumber = "20997489-03";
+
 const slideChromeColors = [
   "#2e5882",
   "#294f7b",
@@ -41,7 +43,6 @@ const translations = {
     verse: "“What God has joined together, let no one separate.”",
     verseReference: "— Matthew 19:6 —",
     firstParents: ["Charbel & Maguy", "Massoud"],
-    and: "and",
     secondParents: ["Jamil & Georgette", "Abou Rjeily"],
     invite:
       "Joyfully invite you to share in the wedding of their son and daughter",
@@ -58,7 +59,10 @@ const translations = {
     giftList: "Wedding Gift List",
     giftIntro: "Your presence is enough of a present to us!",
     giftDetails: "For those who desire, a gift list is available at:",
-    account: "Account: 20997489-03",
+    account: "Account:",
+    copyAccount: "Copy number",
+    accountCopied: "Copied!",
+    accountCopyError: "Unable to copy. Please copy the number manually.",
     rsvp: "Kindly RSVP",
     confirmBy: "Please confirm before September 30, 2026",
     inviteeCount: "Number of invitees:",
@@ -103,12 +107,11 @@ const translations = {
     date: "الأحد · 11 تشرين الأول · 2026",
     countdown: ["يوم", "ساعة", "دقيقة", "ثانية"],
     scroll: "مرّر",
-    verse: "«فالذي جمعه الله لا يفرّقه إنسان»",
+    verse: "«فما جمعه الله لا يفرّقه إنسان.»",
     verseReference: "— متّى 19:6 —",
     firstParents: ["شربل و ماغي", "مسعود"],
-    and: "و",
     secondParents: ["جميل و جورجيت", "أبو رجيلي"],
-    invite: "يسرّهما دعوتكم لمشاركتهما فرحة زفاف ابنهما وابنتهما",
+    invite: "يسرّهم أن يدعوكم لمشاركتهم فرحة زفاف\nابنهما وابنتهما",
     weddingDate: "الأحد، 11 تشرين الأول 2026",
     ceremony: "مراسم الزفاف",
     ceremonyTime: "11 تشرين الأول · الساعة 5:00 مساءً",
@@ -122,7 +125,10 @@ const translations = {
     giftList: "لائحة الهدايا",
     giftIntro: "حضوركم أجمل هدية لنا!",
     giftDetails: "ولمن يرغب، تتوفّر لائحة هدايا لدى:",
-    account: "رقم الحساب: 20997489-03",
+    account: "رقم الحساب:",
+    copyAccount: "نسخ رقم الحساب",
+    accountCopied: "تم النسخ!",
+    accountCopyError: "تعذّر النسخ. يرجى نسخ الرقم يدويًا.",
     rsvp: "تأكيد الحضور",
     confirmBy: "يرجى التأكيد قبل 30 أيلول 2026",
     inviteeCount: "عدد المدعوين:",
@@ -363,6 +369,9 @@ export default function WeddingInvitation({
   const [submittingRsvp, setSubmittingRsvp] = useState(false);
   const [rsvpError, setRsvpError] = useState<RsvpError>("");
   const [confirmed, setConfirmed] = useState(false);
+  const [accountCopyStatus, setAccountCopyStatus] = useState<
+    "idle" | "copied" | "error"
+  >("idle");
   const lockRef = useRef(false);
   const currentRef = useRef(0);
   const touchStartRef = useRef<number | null>(null);
@@ -376,6 +385,21 @@ export default function WeddingInvitation({
   const activeChromeColor =
     slideChromeColors[activeSlide % slideChromeColors.length] ?? "#2e5882";
   const normalizedInvitationCode = invitationCode?.trim();
+
+  async function copyWhishAccount() {
+    try {
+      await navigator.clipboard.writeText(whishAccountNumber);
+      setAccountCopyStatus("copied");
+    } catch {
+      setAccountCopyStatus("error");
+    }
+  }
+
+  useEffect(() => {
+    if (accountCopyStatus === "idle") return;
+    const timeout = window.setTimeout(() => setAccountCopyStatus("idle"), 4000);
+    return () => window.clearTimeout(timeout);
+  }, [accountCopyStatus]);
 
   useEffect(() => {
     try {
@@ -556,7 +580,17 @@ export default function WeddingInvitation({
       }, 760);
     };
 
+    const canScrollSection = (direction: number) => {
+      const section = sectionElements[currentRef.current];
+      if (!section?.hasAttribute("data-scrollable")) return false;
+      // Finish scrolling the guest list before navigating to another section.
+      return direction > 0
+        ? section.scrollTop + section.clientHeight < section.scrollHeight - 1
+        : direction < 0 && section.scrollTop > 1;
+    };
+
     const onWheel = (event: WheelEvent) => {
+      if (canScrollSection(event.deltaY)) return;
       event.preventDefault();
       if (lockRef.current) return;
       if (event.deltaY > 8) goTo(currentRef.current + 1);
@@ -564,9 +598,39 @@ export default function WeddingInvitation({
     };
 
     const onKeyDown = (event: KeyboardEvent) => {
+      if (
+        event.target instanceof Element &&
+        event.target.closest("button, a, input, textarea, select, [contenteditable]")
+      ) {
+        return;
+      }
+
+      const direction = ["ArrowDown", "PageDown", " ", "End"].includes(event.key)
+        ? event.key === " " && event.shiftKey
+          ? -1
+          : 1
+        : ["ArrowUp", "PageUp", "Home"].includes(event.key)
+          ? -1
+          : 0;
+
+      if (canScrollSection(direction)) {
+        event.preventDefault();
+        const section = sectionElements[currentRef.current];
+        const distance = ["Home", "End"].includes(event.key)
+          ? section.scrollHeight
+          : event.key.startsWith("Arrow")
+            ? 40
+            : section.clientHeight * 0.85;
+        section.scrollBy({
+          top: direction * distance,
+          behavior: reducedMotion ? "auto" : "smooth",
+        });
+        return;
+      }
+
       if (["ArrowDown", "PageDown", " "].includes(event.key)) {
         event.preventDefault();
-        goTo(currentRef.current + 1);
+        goTo(currentRef.current + direction);
       } else if (["ArrowUp", "PageUp"].includes(event.key)) {
         event.preventDefault();
         goTo(currentRef.current - 1);
@@ -579,16 +643,29 @@ export default function WeddingInvitation({
       }
     };
 
+    let scrollingSection = false;
+
     const onTouchStart = (event: TouchEvent) => {
+      scrollingSection = false;
       touchStartRef.current = event.touches[0]?.clientY ?? null;
     };
 
     const onTouchMove = (event: TouchEvent) => {
+      const distance =
+        (touchStartRef.current ?? 0) - (event.touches[0]?.clientY ?? 0);
+      if (scrollingSection || canScrollSection(distance)) {
+        // A swipe stays inside the list even if it reaches the end mid-gesture.
+        scrollingSection = true;
+        return;
+      }
       event.preventDefault();
     };
 
     const onTouchEnd = (event: TouchEvent) => {
-      if (touchStartRef.current === null || lockRef.current) return;
+      if (scrollingSection || touchStartRef.current === null || lockRef.current) {
+        touchStartRef.current = null;
+        return;
+      }
       const distance =
         touchStartRef.current -
         (event.changedTouches[0]?.clientY ?? touchStartRef.current);
@@ -1020,20 +1097,19 @@ export default function WeddingInvitation({
               {copy.verseReference}
             </p>
             <div className="wedding-rule reveal" />
-            <p className="reveal text-shadow-wedding grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-x-2 text-[clamp(14px,3.6vw,17px)] font-semibold leading-[1.45] text-[var(--ink)]">
+            <p className="reveal text-shadow-wedding grid grid-cols-2 items-center gap-x-2 text-[clamp(17px,4.4vw,21px)] font-semibold leading-[1.45] text-[var(--ink)]">
               <span className="flex flex-col gap-1">
                 {copy.firstParents.map((parent) => (
                   <span key={parent}>{parent}</span>
                 ))}
               </span>
-              <span className="font-normal italic">{copy.and}</span>
               <span className="flex flex-col gap-1">
                 {copy.secondParents.map((parent) => (
                   <span key={parent}>{parent}</span>
                 ))}
               </span>
             </p>
-            <p className="reveal text-shadow-wedding mt-3 text-[clamp(17px,4.5vw,20px)] leading-[1.55] text-[var(--ink)]">
+            <p className="reveal text-shadow-wedding mt-3 whitespace-pre-line text-[clamp(17px,4.5vw,20px)] leading-[1.55] text-[var(--ink)]">
               {copy.invite}
             </p>
             <p className="reveal text-shadow-wedding font-script mt-2 text-[clamp(42px,11vw,58px)] leading-[1.05] text-(--ink)">
@@ -1114,10 +1190,25 @@ export default function WeddingInvitation({
               <div className="wedding-rule relative my-4 min-[390px]:my-5" />
               <div className="relative text-shadow-wedding">
                 <div className="mb-1.5 text-[clamp(19px,5vw,22px)] font-semibold tracking-[0.06em] text-(--ink) min-[390px]:mb-2">
-                  Whish Money
+                  <span dir="ltr">Whish Money</span>
                 </div>
                 <p className="font-registry-numbers text-[clamp(17px,4.5vw,20px)] leading-7 tracking-[0.04em] text-(--ink) min-[390px]:leading-8">
-                  {copy.account}
+                  {copy.account}{" "}
+                  <bdi dir="ltr" className="whitespace-nowrap">{whishAccountNumber}</bdi>
+                </p>
+                <button
+                  type="button"
+                  onClick={copyWhishAccount}
+                  className={`mt-5 inline-flex min-h-11 min-w-[115px] cursor-pointer items-center justify-center border border-(--gold) bg-transparent px-4 py-3 font-serif-wedding text-[10px] font-normal uppercase text-(--ink) transition hover:bg-white/[0.1] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--gold) active:scale-95 ${isArabic ? "tracking-normal" : "tracking-[0.16em]"}`}
+                >
+                  {copy.copyAccount}
+                </button>
+                <p role="status" className="mt-1 min-h-5 text-sm text-(--ink)">
+                  {accountCopyStatus === "copied"
+                    ? copy.accountCopied
+                    : accountCopyStatus === "error"
+                      ? copy.accountCopyError
+                      : ""}
                 </p>
               </div>
             </div>
@@ -1126,10 +1217,13 @@ export default function WeddingInvitation({
 
         <section
           id={sectionIds[4]}
-          className="flex min-h-svh flex-col items-center justify-center px-7 pb-[120px] pt-24 text-center"
+          className="flex h-svh flex-col items-center overflow-y-auto overscroll-y-contain px-7 pb-[120px] pt-24 text-center"
           data-screen-label="05 RSVP"
+          data-scrollable
+          tabIndex={0}
+          aria-label={copy.rsvp}
         >
-          <div className="w-full max-w-[430px]">
+          <div className="my-auto w-full max-w-[430px] shrink-0">
             <h2 className="reveal text-shadow-wedding font-script text-[clamp(46px,13vw,64px)] leading-[1.04] text-[var(--ink)]">
               {copy.rsvp}
             </h2>
@@ -1159,12 +1253,12 @@ export default function WeddingInvitation({
                   {invitees.map((invitee) => (
                     <div
                       key={invitee.id}
-                      className="flex items-center justify-between gap-3 border-y border-[rgba(252,246,238,0.16)] py-3 text-start"
+                      className="flex flex-wrap items-center justify-between gap-3 border-y border-[rgba(252,246,238,0.16)] py-3 text-start"
                     >
-                      <span className="text-shadow-wedding text-[19px] text-[var(--ink)]">
+                      <span className="text-shadow-wedding min-w-0 flex-1 basis-[120px] [overflow-wrap:anywhere] text-[19px] text-[var(--ink)]">
                         {invitee.fullName ?? copy.guest}
                       </span>
-                      <div className="flex gap-2">
+                      <div className="flex shrink-0 gap-2">
                         <RsvpButton
                           label={copy.accept}
                           variant="accept"
